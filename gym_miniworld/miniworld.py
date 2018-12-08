@@ -736,7 +736,6 @@ class MiniWorldEnv(gym.Env):
             # South wall
             [min_x, max_z],
         ])
-
         room = Room(
             outline,
             **kwargs,
@@ -861,7 +860,7 @@ class MiniWorldEnv(gym.Env):
             ent.dir = dir if dir else self.rand.float(-math.pi, math.pi)
             ent.pos = pos
             self.entities.append(ent)
-            return
+            return ent
 
         # Keep retrying until we find a suitable position
         while True:

@@ -158,6 +158,7 @@ class ImageFrame(Entity):
         self.dir = dir
 
         # Load the image to be displayed
+
         self.tex = Texture.get(tex_name)
 
         self.width = width
@@ -277,6 +278,81 @@ class Box(Entity):
         glPushMatrix()
         glTranslatef(*self.pos)
         glRotatef(self.dir * (180/math.pi), 0, 1, 0)
+
+        glBegin(GL_QUADS)
+        glNormal3f(0, 0, 1)
+        glVertex3f(+hx, +sy, +hz)
+        glVertex3f(-hx, +sy, +hz)
+        glVertex3f(-hx, 0  , +hz)
+        glVertex3f(+hx, 0  , +hz)
+
+        glNormal3f(0, 0, -1)
+        glVertex3f(-hx, +sy, -hz)
+        glVertex3f(+hx, +sy, -hz)
+        glVertex3f(+hx, 0  , -hz)
+        glVertex3f(-hx, 0  , -hz)
+
+        glNormal3f(-1, 0, 0)
+        glVertex3f(-hx, +sy, +hz)
+        glVertex3f(-hx, +sy, -hz)
+        glVertex3f(-hx, 0  , -hz)
+        glVertex3f(-hx, 0  , +hz)
+
+        glNormal3f(1, 0, 0)
+        glVertex3f(+hx, +sy, -hz)
+        glVertex3f(+hx, +sy, +hz)
+        glVertex3f(+hx, 0  , +hz)
+        glVertex3f(+hx, 0  , -hz)
+
+        glNormal3f(0, 1, 0)
+        glVertex3f(+hx, +sy, +hz)
+        glVertex3f(+hx, +sy, -hz)
+        glVertex3f(-hx, +sy, -hz)
+        glVertex3f(-hx, +sy, +hz)
+        glEnd(GL_QUADS)
+
+        glPopMatrix()
+
+class Door(Entity):
+    """
+    Colored Door object
+    """
+
+    def __init__(self, color, tex, size=0.8):
+        super().__init__()
+
+        if type(size) is int or type(size) is float:
+            size = np.array([size, size, size])
+        size = np.array(size)
+        sx, sy, sz = size
+        sz = sz * .01
+        self.color = color
+        self.size = size
+        self.tex = tex
+
+        self.radius = math.sqrt(sx*sx + sz*sz)/2
+        self.height = sy
+
+    def randomize(self, params, rng):
+        self.color_vec = COLORS[self.color] + params.sample(rng, 'obj_color_bias')
+        self.color_vec = np.clip(self.color_vec, 0, 1)
+
+    def render(self):
+        """
+        Draw the object
+        """
+
+        sx, sy, sz = self.size
+        hx = sx / 2
+        hz = sz / 2
+        hz = hz / 20
+        sy = sy * 2
+
+        glDisable(GL_TEXTURE_2D)
+        glColor3f(*self.color_vec)
+
+        glPushMatrix()
+        glTranslatef(*self.pos)
 
         glBegin(GL_QUADS)
         glNormal3f(0, 0, 1)
