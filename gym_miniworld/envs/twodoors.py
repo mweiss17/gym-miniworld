@@ -19,6 +19,7 @@ class TwoDoorsEnv(MiniWorldEnv):
         )
 
     def _gen_world(self):
+        self.size=3.0
         room = self.add_rect_room(
             min_x=0,
             max_x=self.size,
@@ -29,22 +30,17 @@ class TwoDoorsEnv(MiniWorldEnv):
             wall_height=1.1,
             no_ceiling=True
         )
-
-        import math
-        self.door1 = ImageFrame(pos=[2., 0.9, 0.], dir=-1.66, tex_name="metal_door", width=1.)
+        #self.action_space = spaces.Discrete(self.actions.move_forward+1)
+        self.door1 = ImageFrame(pos=[0.5, 0.9, 0.], dir=-1.66, tex_name="metal_door", width=1.)
         self.entities.append(self.door1)
-        self.door2 = ImageFrame(pos=[8., 0.9, 0.], dir=-1.66, tex_name="metal_door", width=1.)
-        self.entities.append(self.door2)
-        self.svhn1 = ImageFrame(pos=[3.0, 1.5, 0.], dir=-1.66, tex_name="svhn", width=1.)
+        # self.door2 = ImageFrame(pos=[8., 0.9, 0.], dir=-1.66, tex_name="metal_door", width=1.)
+        # self.entities.append(self.door2)
+        self.svhn1 = ImageFrame(pos=[0.5, 1.5, 0.02], dir=-1.66, tex_name="svhn", width=1.)
         self.entities.append(self.svhn1)
 
-        self.svhn2 = ImageFrame(pos=[9.0, 1.5, 0.], dir=-1.66, tex_name="svhn2", width=1.)
-        self.entities.append(self.svhn2)
-
-        # self.door2 = self.place_entity(Door(color='blue'), pos=[6.66, 0., 0.])
-        #self.entities.append(ImageFrame(pos=[3.33, 0., 0.], dir=0, tex_name="svhn_1", width=2.))
-        self.entities.append(ImageFrame(pos=[0., 1.7, 5.], dir=0., tex_name="street_scene", width=10.))
-        # self.entities.append(ImageFrame(pos=[3., 1.7, 5.], dir=0., tex_name="svhn_1", width=2.))
+        # self.svhn2 = ImageFrame(pos=[8.0, 1.5, 0.02], dir=-1.66, tex_name="svhn2", width=1.)
+        # self.entities.append(self.svhn2)
+        self.entities.append(ImageFrame(pos=[0., 1.7, 5.], dir=0., tex_name="street_scene", width=1.))
         self.place_agent()
 
     def step(self, action):
